@@ -1,5 +1,6 @@
 package com.icaboalo.tabsdrawerretrofitwithbutternife.ui.fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import com.icaboalo.tabsdrawerretrofitwithbutternife.R;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.domain.UdacityModel;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.io.ApiClient;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.io.model.SearchUdacityResponse;
+import com.icaboalo.tabsdrawerretrofitwithbutternife.sqlite.CoursesOpenHelper;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.ui.adapter.UdacityRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -91,5 +93,13 @@ public class UdacityFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    public void createDataBase(){
+        CoursesOpenHelper openHelper = new CoursesOpenHelper(getActivity());
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+
+        openHelper.onCreate(db);
+//        db.insert(DbConstants.TABLE_UDACITY, DbConstants.COLUMN_TITLE, );
     }
 }

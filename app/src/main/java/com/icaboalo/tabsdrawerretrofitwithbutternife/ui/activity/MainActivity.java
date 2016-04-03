@@ -2,6 +2,7 @@ package com.icaboalo.tabsdrawerretrofitwithbutternife.ui.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,9 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.icaboalo.tabsdrawerretrofitwithbutternife.R;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.constants.PrefsConstants;
+import com.icaboalo.tabsdrawerretrofitwithbutternife.sqlite.CoursesOpenHelper;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.ui.fragment.CourseraFragment;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.ui.fragment.HomeFragment;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.ui.fragment.UdacityFragment;
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.navigation_view)
     NavigationView mNavigationView;
 
+    @Bind(R.id.username)
+    TextView usernameHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
 
-        if (!isUserDataSaved()){
+        CoursesOpenHelper openHelper = new CoursesOpenHelper(getApplicationContext());
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+
+        if (!isUserDataSaved()) {
             goToLogin();
         }
 
@@ -48,29 +57,33 @@ public class MainActivity extends AppCompatActivity {
 
         navigationViewOnClick();
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PrefsConstants.FILE_LOGIN, MODE_PRIVATE);
+        String username = sharedPreferences.getString(PrefsConstants.PREF_USERNAME, null);
+        usernameHeader.setText(username);
+
     }
 
     private void navigationViewOnClick() {
-            mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem menuItem) {
-                    Fragment fragment = null;
-                    switch (menuItem.getItemId()) {
-                        case R.id.action_udacity:
-                            fragment = new UdacityFragment();
-                            break;
-                        case R.id.action_home:
-                            fragment = new HomeFragment();
-                            break;
-                        case R.id.action_coursera:
-                            fragment = new CourseraFragment();
-                            break;
-                    }
-                    replaceFragment(fragment);
-                    mDrawerLayout.closeDrawers();
-                    return false;
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Fragment fragment = null;
+                switch (menuItem.getItemId()) {
+                    case R.id.action_udacity:
+                        fragment = new UdacityFragment();
+                        break;
+                    case R.id.action_home:
+                        fragment = new HomeFragment();
+                        break;
+                    case R.id.action_coursera:
+                        fragment = new CourseraFragment();
+                        break;
                 }
-            });
+                replaceFragment(fragment);
+                mDrawerLayout.closeDrawers();
+                return false;
+            }
+        });
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -88,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+        // automatically handle clicks on the    Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 return true;
             case R.id.action_log_out:
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(mDrawerLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    public boolean isUserDataSaved(){
+    public boolean isUserDataSaved() {
         SharedPreferences sharedPreferences = getSharedPreferences(PrefsConstants.FILE_LOGIN, MODE_PRIVATE);
         return sharedPreferences.contains(PrefsConstants.PREF_USERNAME)
                 && sharedPreferences.contains(PrefsConstants.PREF_PASSWORD);

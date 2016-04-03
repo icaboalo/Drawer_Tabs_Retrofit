@@ -34,7 +34,12 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
+    }
 
+    @OnClick(R.id.sign_up)
+    void signup(){
+        Intent goToSignUp = new Intent(this, SignUpActivity.class);
+        startActivity(goToSignUp);
     }
 
     @Override

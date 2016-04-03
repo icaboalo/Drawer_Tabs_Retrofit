@@ -11,7 +11,7 @@ public class CourseraConstants {
     public static final String ARG_FIELD = "fields";
     public static final String VALUE_SHORT_DESCRIPTION = "shortDescription";
     public static final String VALUE_PHOTO = "photo";
-    public static final String ARG_QUERY = "query";
+    public static final String  ARG_QUERY = "query";
     public static final String URL_SEARCH_COURSE =
             PATH_COURSES +
                     "?" +

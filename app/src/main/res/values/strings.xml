@@ -17,4 +17,10 @@
     <string name="login_succes">Logging in... please be pacient</string>
     <string name="log_out">Logout</string>
     <string name="log_out_message">Logging you out</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="email_input_error">Please enter an Email</string>
+    <string name="name_input_error">Please enter a Name</string>
 </resources>

@@ -1,8 +1,10 @@
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
 import com.icaboalo.tabsdrawerretrofitwithbutternife.BuildConfig;
+import com.icaboalo.tabsdrawerretrofitwithbutternife.sqlite.Constants.DbConstants;
 import com.icaboalo.tabsdrawerretrofitwithbutternife.sqlite.CoursesOpenHelper;
 
 import org.junit.Assert;
@@ -28,6 +30,12 @@ public class FriendsDbTest {
         SQLiteDatabase db = openHelper.getWritableDatabase();
 
         Assert.assertNotNull("La base de datos no se creo: (", db + ")");
-        
+
+        ContentValues values = new ContentValues();
+        values.put(DbConstants.COLUMN_TITLE, "this is a title");
+        values.put(DbConstants.COLUMN_LANGUAGE, "language");
+        values.put(DbConstants.COLUMN_DESCRIPTION, "description");
+        db.insert(DbConstants.TABLE_COURSEA, null, values);
+        db.close();
     }
 }
